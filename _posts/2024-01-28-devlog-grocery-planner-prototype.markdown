@@ -31,7 +31,7 @@ and get the ingredients, picture and title of the recipe. Traders joe's website 
 for all the app to load. I want to see if I could run this in my home lab.
 
 To avoid design paralysis I used [vercel's v0](https://v0.dev/) to get insperation for a [stepper](https://v0.dev/t/InwFUEm1kD8).
-The tool works gret and got an initial mock UI that I could implement. Setting up the front end was a good first milestone to get some early wins going. To get there I have to set the libraries.
+The tool works great and got an initial mock UI that I could implement. Setting up the front end was a good first milestone to get some early wins going. To get there I have to set the libraries.
 
 <img alt="target for the prototype" src="{{ "/assets/img/v0-stepper.png"  | absolute_url }}" />
 
