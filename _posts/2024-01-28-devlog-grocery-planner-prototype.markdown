@@ -24,19 +24,36 @@ over the design of the app. Will divide it into a series of blog posts to keep i
 
 I'll try to approximate how much load this system might be able to handle. You can see the final code [here](https://github.com/qsiandre/meal-plan).
 
-### Proof of concept
+### Dev Stack
 
 Started by working on a proof of concept. Get a simple form where you can add a url from traders joes,
 and get the ingredients, picture and title of the recipe. Traders joe's website is not server side rendered, so I need to wait
 for all the app to load. I want to see if I could run this in my home lab.
 
-I get design paralysis, so tried to get some inspiration form [vercel's v0](https://v0.dev/). The tool works gret and got an
-initial mock UI that I could implement. Setting up the front end, was a good first milestone to get some early wins going.
+To avoid design paralysis I used [vercel's v0](https://v0.dev/) to get insperation for a [stepper](https://v0.dev/t/InwFUEm1kD8).
+The tool works gret and got an initial mock UI that I could implement. Setting up the front end was a good first milestone to get some early wins going. To get there I have to set the libraries.
 
-For the web app, I wanted to use Bun as the web server. Bun is a fast all batteries included runtime for JS. I haven't setup
-Relay by myself, so wanted to learn about how to build a template to run in projects I want to build with Bun.
-Relay requires a GraphQL server schema, usually I manually wire it by writing the an schema.graphql and doing the bindings in node,
-this time I wanted to use Grats to replicates the code first approach I'm used to at Meta.
+<img alt="target for the prototype" src="{{ "/assets/img/v0-stepper.png"  | absolute_url }}" />
+
+For the web app, I wanted to use Bun as the web server and general runtime for scripts. Bun is a fast all batteries included runtime for JS
+and I wanted to try it myself. I wanted to use React and Relay for the client. I haven't setup Relay with Bun, so want to build a template
+that I can reuse in other projects.
+
+Relay requires a GraphQL schema to work. I use the schema first approach by writing an schema.graphql and doing the bindings in node,
+the process is time consuming and error prone. This time I wanted to use Grats to replicates the code first approach I'm used to at work.
+
+<pre class="mermaid">
+  graph LR
+  subgraph Browser[Client]
+    React --> Relay
+  end
+  subgraph Bun[Bun Server]
+    Yoga --> Grats
+  end
+  Relay --> Yoga 
+  Relay -.-> |Enforces| GraphQLSchema
+  Grats --> |Generates| GraphQLSchema
+</pre>
 
 ### Client Setup
 
@@ -97,7 +114,7 @@ trying and failing multiple times got used to it. So `Ingress > Service > Pod`.
 
 <pre class="mermaid">
   graph LR
-  Browser --> Relay --> Grats --> Chrome
+  React --> Relay --> Grats --> Chrome
 </pre>
 
 The hot path is scraping, it consumes 300MB of memory per request, takes 10 - 20 seconds to finish. Since I have 3 machines with 4GB of memory, it could create aprox 10 with
